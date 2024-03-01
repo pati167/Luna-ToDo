@@ -55,7 +55,7 @@
             <img src="~assets/images.jpg" />
           </q-avatar>
           <div class="text-weight-bold">Luna</div>
-          <div>@lunabuelinda</div>
+          <div>@luna127</div>
         </div>
       </q-img>
     </q-drawer>

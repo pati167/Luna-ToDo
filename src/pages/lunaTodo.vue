@@ -22,7 +22,7 @@
       <q-item
         v-for="(task, index) in tasks"
         :key="task.title"
-        @click="task.done = !task.done"
+        @click="toggleTaskStatus(index)"
         :class="{ 'done bg-green-1': task.done }"
         clickable
         v-ripple
@@ -61,22 +61,7 @@ export default {
   data() {
     return {
       newTask: '',
-      tasks: [
-        /*
-        {
-          title: 'kiss luna',
-          done: false,
-        },
-        {
-          title: 'hug luna',
-          done: false,
-        },
-        {
-          title: 'look at luna',
-          done: false,
-        },
-        */
-      ],
+      tasks: [],
     };
   },
   methods: {
@@ -90,6 +75,7 @@ export default {
         })
         .onOk(() => {
           this.tasks.splice(index, 1);
+          this.updateLocalStorage();
           this.$q.notify('Task deleted!');
         });
     },
@@ -99,7 +85,21 @@ export default {
         done: false,
       });
       this.newTask = '';
+      this.updateLocalStorage();
     },
+    updateLocalStorage() {
+      localStorage.setItem('tasks', JSON.stringify(this.tasks));
+    },
+    toggleTaskStatus(index) {
+      this.tasks[index].done = !this.tasks[index].done;
+      this.updateLocalStorage();
+    },
+  },
+  created() {
+    const storedTasks = localStorage.getItem('tasks');
+    if (storedTasks) {
+      this.tasks = JSON.parse(storedTasks);
+    }
   },
 };
 </script>
